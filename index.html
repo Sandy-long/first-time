@@ -323,6 +323,107 @@
                 type: "formal", 
                 response: "常见回应:",
                 examples: ["Really? That's nice to hear!", "I hope it was all good things!", "Oh? In what context?"]
+            },
+            // 以下是截图中的内容
+            { 
+                text: "I didn't quite catch your name.", 
+                translation: "我没听清楚你的名字。", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["It's [Your Name].", "Sorry, I'm [Your Name].", "Oh, let me repeat: [Your Name]."]
+            },
+            { 
+                text: "I'm sorry. I didn't get your name.", 
+                translation: "抱歉，我没听清你的名字。", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["No problem, it's [Your Name].", "I'm [Your Name].", "Sorry, I should have spoken louder: [Your Name]."]
+            },
+            { 
+                text: "How do I address you?", 
+                translation: "我该怎么称呼你？", 
+                type: "formal", 
+                response: "常见回应:",
+                examples: ["Please call me Mary. That's my first name.", "Mr./Ms. [Last Name] is fine.", "Just [Nickname] is okay."]
+            },
+            { 
+                text: "How many brothers and sisters do you have?", 
+                translation: "你有几个兄弟姐妹？", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["I have two brothers and one sister.", "I'm an only child.", "I have three sisters."]
+            },
+            { 
+                text: "Where are you working now?", 
+                translation: "你现在在哪里工作？", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["I work at [Company Name].", "I'm currently between jobs.", "I'm self-employed."]
+            },
+            { 
+                text: "I've been looking forward to meeting you.", 
+                translation: "我一直期待见到你。", 
+                type: "formal", 
+                response: "常见回应:",
+                examples: ["Likewise!", "That's very kind of you to say.", "I've heard great things about you too."]
+            },
+            { 
+                text: "I've heard a great deal about you.", 
+                translation: "我听说过很多关于你的事。", 
+                type: "formal", 
+                response: "常见回应:",
+                examples: ["All good things, I hope!", "Really? From whom?", "Likewise, I've heard about you too."]
+            },
+            // 以下是新增的13-18条内容
+            { 
+                text: "Is this your first trip to China?", 
+                translation: "这是你第一次来中国吗？", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["Yes, it's my first time here.", "No, I've been here a few times before.", "Actually, I lived here for a year."]
+            },
+            { 
+                text: "Have you ever been to Guangzhou?", 
+                translation: "你去过广州吗？", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["Yes, I visited last year.", "No, this is my first time in China.", "Not yet, but I'd love to go."]
+            },
+            { 
+                text: "What impressed you the most about Shanghai?", 
+                translation: "上海给你印象最深的是什么？", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["The skyline is amazing!", "The mix of old and new architecture.", "How friendly everyone has been."]
+            },
+            { 
+                text: "May I ask where you are from?", 
+                translation: "可以问一下你来自哪里吗？", 
+                type: "formal", 
+                response: "常见回应:",
+                examples: ["I'm from [Country/City].", "Originally from [Place], but I live in [Place] now.", "I was born in [Place]."]
+            },
+            { 
+                text: "I hope you're enjoying your stay here.", 
+                translation: "希望你在这里过得愉快。", 
+                type: "formal", 
+                response: "常见回应:",
+                examples: ["Thank you, I am!", "It's been wonderful so far.", "Yes, everyone has been so welcoming."]
+            },
+            { 
+                text: "It always takes time to get used to a new place.", 
+                translation: "适应一个新地方总是需要时间的。", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["That's very true.", "I'm starting to feel more comfortable already.", "Any tips for adjusting faster?"]
+            },
+            { 
+                text: "Sorry, I couldn't help overhearing - did you mention something about...", 
+                translation: "抱歉，我无意中听到 - 你刚才是不是提到了...", 
+                type: "casual", 
+                response: "常见回应:",
+                examples: ["Oh yes, I was just saying...", "Actually, I was talking about...", "No, I think you might have misheard."],
+                note: "礼貌的切入话题"
             }
         ];
 
@@ -353,6 +454,12 @@
                     examplesHTML = `<ul style="margin-top:5px;padding-left:20px;text-align:center;list-style-position:inside;">${examplesHTML}</ul>`;
                 }
 
+                // 如果有note，添加到翻译后面
+                let translationWithNote = greeting.translation;
+                if (greeting.note) {
+                    translationWithNote += `<br><span style="font-size:0.8rem;color:#888;">(${greeting.note})</span>`;
+                }
+
                 card.innerHTML = `
                     <div class="flashcard-inner">
                         <div class="flashcard-front">
@@ -360,7 +467,7 @@
                             <div class="formality ${formalityClass}">${getTypeInChinese(greeting.type)}</div>
                         </div>
                         <div class="flashcard-back">
-                            <div class="translation">${greeting.translation}</div>
+                            <div class="translation">${translationWithNote}</div>
                             ${greeting.response ? `<div class="response">${greeting.response}</div>` : ''}
                             ${examplesHTML ? `<div class="response-examples">${examplesHTML}</div>` : ''}
                         </div>
