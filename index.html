@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首次见面不尴尬表达</title>
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --light-color: #f8f9fa;
+            --dark-color: #202124;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--dark-color);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .greeting-types {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .type-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            background-color: white;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .type-btn:hover, .type-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .flashcards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .flashcard {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 150px;
+            perspective: 1000px;
+        }
+
+        .flashcard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            padding: 15px;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .greeting {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .translation {
+            font-size: 1rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .formality {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .formal {
+            background-color: #f0e6ff;
+            color: #673ab7;
+        }
+
+        .informal {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .casual {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .response {
+            font-style: italic;
+            color: var(--accent-color);
+            margin-top: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .response-examples {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #555;
+            text-align: center;
+            width: 100%;
+        }
+
+        .practice-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .practice-title {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .scenario {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .scenario-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .check-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .check-btn:hover {
+            background-color: #2d8a4a;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .correct {
+            color: var(--secondary-color);
+        }
+
+        .incorrect {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 600px) {
+            .flashcards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>首次见面的不尴尬表达</h1>
+
+        <div class="greeting-types">
+            <button class="type-btn active" data-type="all">全部</button>
+            <button class="type-btn" data-type="formal">正式</button>
+            <button class="type-btn" data-type="informal">一般</button>
+            <button class="type-btn" data-type="casual">随意</button>
+        </div>
+
+        <div class="flashcards-container" id="flashcards">
+            <!-- 卡片将通过JavaScript动态生成 -->
+        </div>
+
+        <div class="practice-section">
+            <h2 class="practice-title">情景练习</h2>
+
+            <div class="scenario">
+                <div class="scenario-text">1. 你想礼貌地询问对方的名字：</div>
+                <input type="text" class="answer-input" data-answer="may i have your name, please">
+                <button class="check-btn">检查</button>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="scenario">
+                <div class="scenario-text">2. 你觉得对方看起来很面熟，想表达这个意思：</div>
+                <input type="text" class="answer-input" data-answer="you look very familiar">
+                <button class="check-btn">检查</button>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="scenario">
+                <div class="scenario-text">3. 你想问对方你们之前是否见过面：</div>
+                <input type="text" class="answer-input" data-answer="haven't we met before">
+                <button class="check-btn">检查</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const greetings = [
+            { 
+                text: "May I have your name, please?", 
+                translation: "请问您叫什么名字？", 
+                type: "formal", 
+                response: "常见回应:",
+                examples: ["My name is [Your Name].", "I'm [Your Name].", "Sure, it's [Your Name]."]
+            },
+            { 
+                text: "I think I've seen you before. You look very familiar.", 
+                translation: "我想我以前见过你。你看起来很面熟。", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["Really? Maybe at [place]?", "I was thinking the same thing!", "I don't think so, but nice to meet you now."]
+            },
+            { 
+                text: "Say, don't I know you from somewhere?", 
+                translation: "我们是不是在哪里见过？", 
+                type: "casual", 
+                response: "常见回应:",
+                examples: ["Hmm, I'm not sure.", "Maybe at [event/place]?", "I don't think so, but nice to meet you!"]
+            },
+            { 
+                text: "I must have seen you somewhere before.", 
+                translation: "我一定在哪里见过你。", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["Really? Where do you think it might have been?", "I get that a lot!", "Maybe we have mutual friends?"]
+            },
+            { 
+                text: "Haven't we met before?", 
+                translation: "我们之前见过吗？", 
+                type: "informal", 
+                response: "常见回应:",
+                examples: ["I don't think so.", "Actually, yes! At [place].", "Maybe at [event] last year?"]
+            },
+            { 
+                text: "We have talked of you often.", 
+                translation: "我们经常谈起你。", 
+                type: "formal", 
+                response: "常见回应:",
+                examples: ["Really? That's nice to hear!", "I hope it was all good things!", "Oh? In what context?"]
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            renderFlashcards(greetings);
+            setupEventListeners();
+        });
+
+        function renderFlashcards(greetingsToRender) {
+            const flashcardsContainer = document.getElementById('flashcards');
+            flashcardsContainer.innerHTML = '';
+
+            greetingsToRender.forEach(greeting => {
+                const card = document.createElement('div');
+                card.className = 'flashcard';
+
+                let formalityClass = '';
+                if (greeting.type === 'formal') formalityClass = 'formal';
+                else if (greeting.type === 'informal') formalityClass = 'informal';
+                else formalityClass = 'casual';
+
+                // 生成示例回答的HTML
+                let examplesHTML = '';
+                if (greeting.examples && greeting.examples.length > 0) {
+                    examplesHTML = greeting.examples.map(example => 
+                        `<li>${example}</li>`
+                    ).join('');
+                    examplesHTML = `<ul style="margin-top:5px;padding-left:20px;text-align:center;list-style-position:inside;">${examplesHTML}</ul>`;
+                }
+
+                card.innerHTML = `
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="greeting">${greeting.text}</div>
+                            <div class="formality ${formalityClass}">${getTypeInChinese(greeting.type)}</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="translation">${greeting.translation}</div>
+                            ${greeting.response ? `<div class="response">${greeting.response}</div>` : ''}
+                            ${examplesHTML ? `<div class="response-examples">${examplesHTML}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('click', function () {
+                    this.classList.toggle('flipped');
+                });
+
+                flashcardsContainer.appendChild(card);
+            });
+        }
+
+        function setupEventListeners() {
+            const typeButtons = document.querySelectorAll('.type-btn');
+            typeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    typeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const type = this.dataset.type;
+                    filterGreetings(type);
+                });
+            });
+
+            const checkButtons = document.querySelectorAll('.check-btn');
+            checkButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const scenario = this.parentElement;
+                    const input = scenario.querySelector('.answer-input');
+                    const feedback = scenario.querySelector('.feedback');
+                    const correctAnswer = input.dataset.answer.toLowerCase();
+                    const userAnswer = input.value.trim().toLowerCase();
+
+                    if (userAnswer === correctAnswer) {
+                        feedback.textContent = "正确！👍";
+                        feedback.className = "feedback correct";
+                    } else {
+                        feedback.textContent = `不正确，正确答案是: "${correctAnswer}"`;
+                        feedback.className = "feedback incorrect";
+                    }
+
+                    feedback.style.display = 'block';
+                });
+            });
+        }
+
+        function filterGreetings(type) {
+            if (type === 'all') {
+                renderFlashcards(greetings);
+                return;
+            }
+
+            const filtered = greetings.filter(greeting => greeting.type === type);
+            renderFlashcards(filtered);
+        }
+
+        function getTypeInChinese(type) {
+            switch (type) {
+                case 'formal': return '正式';
+                case 'informal': return '一般';
+                case 'casual': return '随意';
+                default: return '';
+            }
+        }
+    </script>
+</body>
+</html>
